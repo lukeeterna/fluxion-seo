@@ -99,6 +99,7 @@ img, svg { display: block; max-width: 100%; }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; font-size: 1.15rem; }
 .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-500), var(--brand-700)); }
+.brand .logo { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; }
 .brand .tld { color: var(--muted); font-weight: 600; }
 
 /* ---------- Buttons ---------- */

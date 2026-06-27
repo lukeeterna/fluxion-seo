@@ -20,7 +20,7 @@ const finalWaText = `Ciao! Sono un ${page.professioneSingolare} di ${page.citta}
 const serviceLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: `FLUXION \u2014 Gestionale per ${page.verticaleLabel} a ${page.citta}`,
+  name: `FLUXION — Gestionale per ${page.verticaleLabel} a ${page.citta}`,
   serviceType: 'Software gestionale per saloni di parrucchieri',
   description: page.description,
   areaServed: { '@type': 'City', name: page.citta },
@@ -79,7 +79,7 @@ const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 >
   <header class="site-header">
     <div class="wrap">
-      <span class="brand"><span class="dot"></span>FLUXION<span class="tld">.app</span></span>
+      <span class="brand"><img class="logo" src="/logo-fluxion.jpg" alt="FLUXION" width="32" height="32" />FLUXION<span class="tld">.app</span></span>
       <a class="btn btn-wa" href={waHref(heroWaText)} rel="nofollow" aria-label="Scrivi su WhatsApp per una demo">
         <Fragment set:html={waIcon} /> Chiedi una demo
       </a>
@@ -90,16 +90,16 @@ const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <!-- HERO -->
     <section class="hero">
       <div class="wrap">
-        <span class="eyebrow">Gestionale per {page.verticaleLabel} \u00b7 {page.citta}</span>
+        <span class="eyebrow">Gestionale per {page.verticaleLabel} · {page.citta}</span>
         <h1>{page.heroH1}</h1>
         <p class="lead">{page.heroLead}</p>
         <div class="cta-row">
           <a class="btn btn-wa" href={waHref(heroWaText)} rel="nofollow">
             <Fragment set:html={waIcon} /> Scrivici su WhatsApp
           </a>
-          <a class="btn btn-ghost" href="#prezzo">Vedi il prezzo \u2014 497\u20ac una tantum</a>
+          <a class="btn btn-ghost" href="#prezzo">Vedi il prezzo — 497€ una tantum</a>
         </div>
-        <p class="reassure"><Fragment set:html={ck} /> Risposta da una persona vera \u00b7 nessun call center \u00b7 nessun impegno</p>
+        <p class="reassure"><Fragment set:html={ck} /> Risposta da una persona vera · nessun call center · nessun impegno</p>
 
         <div class="trust">
           <div><Fragment set:html={ck} /> Pagamento una tantum, mai abbonamenti</div>
@@ -164,7 +164,7 @@ const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <p style="color:var(--brand-100);margin-top:var(--s-2);max-width:46ch">Niente canone mensile che cresce ogni anno. Paghi una volta e FLUXION resta tuo, sul tuo computer.</p>
         </div>
         <div class="price-card">
-          <div class="amount"><span class="big">497\u20ac</span><span class="once">una tantum</span></div>
+          <div class="amount"><span class="big">497€</span><span class="once">una tantum</span></div>
           <ul>
             <li><Fragment set:html={ck} /> Agenda, schede cliente e cassa illimitate</li>
             <li><Fragment set:html={ck} /> Promemoria WhatsApp automatici</li>
@@ -214,8 +214,8 @@ const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
   <footer class="site-footer">
     <div class="wrap">
       <div class="row">
-        <span class="brand" style="color:#fff"><span class="dot"></span>FLUXION<span class="tld" style="color:#94a3b8">.app</span></span>
-        <span>Gestionale desktop per PMI italiane \u00b7 €497 una tantum</span>
+        <span class="brand" style="color:#fff"><img class="logo" src="/logo-fluxion.jpg" alt="FLUXION" width="28" height="28" />FLUXION<span class="tld" style="color:#94a3b8">.app</span></span>
+        <span>Gestionale desktop per PMI italiane · €497 una tantum</span>
       </div>
       <p class="legal">
         FLUXION è un software gestionale per saloni e attività locali. Questa pagina è informativa:
