@@ -1,0 +1,227 @@
+---
+import Base from '../layouts/Base.astro';
+import { pages, waHref, type Feature } from '../data/locations.ts';
+
+export function getStaticPaths() {
+  return pages.map((p) => ({
+    params: { slug: p.slug },
+    props: { page: p },
+  }));
+}
+
+const { page } = Astro.props;
+const path = `/${page.slug}/`;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+
+const heroWaText = `Ciao, ho visto la pagina su FLUXION per ${page.verticaleLabel.toLowerCase()} a ${page.citta}, vorrei una demo`;
+const finalWaText = `Ciao! Sono un ${page.professioneSingolare} di ${page.citta} e vorrei capire come FLUXION può aiutarmi in salone`;
+
+// ---- JSON-LD ----
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `FLUXION \u2014 Gestionale per ${page.verticaleLabel} a ${page.citta}`,
+  serviceType: 'Software gestionale per saloni di parrucchieri',
+  description: page.description,
+  areaServed: { '@type': 'City', name: page.citta },
+  provider: {
+    '@type': 'Organization',
+    name: 'FLUXION',
+    url: site || 'https://fluxion-app.com',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '497',
+    priceCurrency: 'EUR',
+    url: `${site}${path}`,
+    availability: 'https://schema.org/InStock',
+  },
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'FLUXION', item: site || 'https://fluxion-app.com' },
+    { '@type': 'ListItem', position: 2, name: `${page.verticaleLabel} ${page.citta}`, item: `${site}${path}` },
+  ],
+};
+
+const icons: Record<Feature['icon'], string> = {
+  calendar: '<path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',
+  bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',
+  phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',
+  whatsapp: '<path d="M3 21l1.65-4.5A8.5 8.5 0 1 1 8 19.3L3 21z"/>',
+  card: '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM2 10h20M6 15h6"/>',
+  chart: '<path d="M3 3v18h18M8 16V9M13 16V5M18 16v-6"/>',
+};
+
+const ck = '<svg class="ck" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.6-1.4-3.7-3.2-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.3A10 10 0 1 0 12 2"/></svg>';
+---
+
+<Base
+  title={page.title}
+  description={page.description}
+  path={path}
+  ogImage="/og-default.png"
+  jsonLd={[serviceLd, faqLd, breadcrumbLd]}
+>
+  <header class="site-header">
+    <div class="wrap">
+      <span class="brand"><span class="dot"></span>FLUXION<span class="tld">.app</span></span>
+      <a class="btn btn-wa" href={waHref(heroWaText)} rel="nofollow" aria-label="Scrivi su WhatsApp per una demo">
+        <Fragment set:html={waIcon} /> Chiedi una demo
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow">Gestionale per {page.verticaleLabel} \u00b7 {page.citta}</span>
+        <h1>{page.heroH1}</h1>
+        <p class="lead">{page.heroLead}</p>
+        <div class="cta-row">
+          <a class="btn btn-wa" href={waHref(heroWaText)} rel="nofollow">
+            <Fragment set:html={waIcon} /> Scrivici su WhatsApp
+          </a>
+          <a class="btn btn-ghost" href="#prezzo">Vedi il prezzo \u2014 497\u20ac una tantum</a>
+        </div>
+        <p class="reassure"><Fragment set:html={ck} /> Risposta da una persona vera \u00b7 nessun call center \u00b7 nessun impegno</p>
+
+        <div class="trust">
+          <div><Fragment set:html={ck} /> Pagamento una tantum, mai abbonamenti</div>
+          <div><Fragment set:html={ck} /> Funziona offline in salone</div>
+          <div><Fragment set:html={ck} /> Promemoria su WhatsApp, non serve app</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE before/after -->
+    <section class="section case">
+      <div class="wrap">
+        <div class="shead">
+          <span class="eyebrow">Storia vera di salone</span>
+          <h2>Cosa cambia in un salone di {page.citta}</h2>
+        </div>
+        <div class="case-card">
+          <div class="case-grid">
+            <div class="ba before">
+              <span class="tag">Prima</span>
+              <p>{page.caseBefore}</p>
+            </div>
+            <div class="ba after">
+              <span class="tag">Dopo, con FLUXION</span>
+              <p>{page.caseAfter}</p>
+            </div>
+          </div>
+          <div class="metric">
+            <span class="num">{page.metricNum}</span>
+            <span class="lbl">{page.metricLabel}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section">
+      <div class="wrap">
+        <div class="shead">
+          <span class="eyebrow">Pensato per chi sta dietro la sedia</span>
+          <h2>Cosa risolve FLUXION per un {page.professioneSingolare}</h2>
+          <p>Non un gestionale generico riadattato: gli strumenti che servono davvero in un salone, senza fronzoli.</p>
+        </div>
+        <div class="feat-grid">
+          {page.features.map((f) => (
+            <article class="feat">
+              <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[f.icon]} /></div>
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICE -->
+    <section class="section price" id="prezzo">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow" style="background:rgba(255,255,255,.1);color:#d1fae5;border-color:rgba(255,255,255,.18)">Prezzo trasparente</span>
+          <h2 style="font-size:var(--fs-h2);margin-top:var(--s-2)">Una volta. Tuo per sempre.</h2>
+          <p style="color:var(--brand-100);margin-top:var(--s-2);max-width:46ch">Niente canone mensile che cresce ogni anno. Paghi una volta e FLUXION resta tuo, sul tuo computer.</p>
+        </div>
+        <div class="price-card">
+          <div class="amount"><span class="big">497\u20ac</span><span class="once">una tantum</span></div>
+          <ul>
+            <li><Fragment set:html={ck} /> Agenda, schede cliente e cassa illimitate</li>
+            <li><Fragment set:html={ck} /> Promemoria WhatsApp automatici</li>
+            <li><Fragment set:html={ck} /> Sara, la receptionist vocale AI (prova inclusa)</li>
+            <li><Fragment set:html={ck} /> Aggiornamenti e funzionamento offline</li>
+          </ul>
+          <a class="btn btn-wa" style="margin-top:var(--s-4);width:100%" href={waHref(finalWaText)} rel="nofollow">
+            <Fragment set:html={waIcon} /> Chiedi una demo gratuita
+          </a>
+          <p class="note">Ti rispondiamo su WhatsApp e ti mostriamo come funziona nel tuo salone. Nessun impegno.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="wrap">
+        <div class="shead">
+          <span class="eyebrow">Domande frequenti</span>
+          <h2>Quello che i parrucchieri ci chiedono</h2>
+        </div>
+        <div class="faq-list">
+          {page.faq.map((f) => (
+            <details class="faq-item">
+              <summary>{f.q}<span class="chev" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+              <p class="a">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section final">
+      <div class="wrap">
+        <h2>Pronto a togliere il telefono dalle mani impegnate?</h2>
+        <p>Scrivici su WhatsApp: ti facciamo vedere FLUXION sul tuo salone di {page.citta}, senza impegno e senza installare nulla.</p>
+        <div class="cta-row">
+          <a class="btn btn-wa" href={waHref(finalWaText)} rel="nofollow">
+            <Fragment set:html={waIcon} /> Scrivici ora su WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="row">
+        <span class="brand" style="color:#fff"><span class="dot"></span>FLUXION<span class="tld" style="color:#94a3b8">.app</span></span>
+        <span>Gestionale desktop per PMI italiane \u00b7 €497 una tantum</span>
+      </div>
+      <p class="legal">
+        FLUXION è un software gestionale per saloni e attività locali. Questa pagina è informativa:
+        contattandoci su WhatsApp sei tu ad avviare la conversazione, nel rispetto della tua privacy (GDPR, Art. 6.1.b).
+        Prezzo indicato IVA esclusa. Disponibile per Windows 10+ e macOS 12+.
+      </p>
+    </div>
+  </footer>
+</Base>
