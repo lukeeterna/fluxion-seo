@@ -54,7 +54,7 @@ export const pages: PageData[] = [
     caseBefore:
       'Un salone con 3 postazioni in centro a Bologna passava ogni sera circa un\u2019ora a chiamare i clienti del giorno dopo per confermare. Telefono che squilla durante il servizio, appunti persi, due clienti prenotati sullo stesso slot.',
     caseAfter:
-      'Con i promemoria WhatsApp automatici e l\u2019agenda condivisa tra le postazioni, le conferme partono da sole la sera prima. Le telefonate a vuoto sono sparite e i mancati appuntamenti si sono ridotti drasticamente.',
+      'Con i promemoria WhatsApp automatici e l\u2019agenda condivisa tra le postazioni, le conferme partono da sole la sera prima. Le telefonate a vuoto sono sparite e le circa 8 ore a settimana che prima andavano in chiamate di conferma restano per il lavoro in salone.',
     metricNum: '~8 ore',
     metricLabel:
       'a settimana recuperate eliminando le chiamate di conferma manuali \u2014 tempo che torna sulla sedia, non al telefono.',
