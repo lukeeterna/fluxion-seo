@@ -1,38 +1,15 @@
-# Prompt ripartenza — generato automaticamente
+# Breadcrumb ripartenza — STATE.md è il source-of-truth
 
-**Generato**: `2026-06-27T20:28:21Z`
-**Sessione**: `508382f5-74ca-4e7a-81d8-7eea7ded3376`
-**Repo**: `/private/tmp/seo-prod` (branch `master`)
-**Commit auto**: commit-failed
-**Last commit**: `26f7c9c docs: report live + Lighthouse 91/95/100/100`
+**Generato**: `2026-07-01T15:53:22Z` · sessione `d50e3972-3fa2-4a0d-90e5-efb281bf74ac` · commit auto: cosmetic-skip (only NEXT_SESSION_PROMPT.md dirty, no plan/scope change)
 
-## Ultimi 5 commit
-```
-26f7c9c docs: report live + Lighthouse 91/95/100/100
-018af2a feat: SEO doorway template — gestionale parrucchieri Bologna (Astro, zero-JS, JSON-LD, WhatsApp CTA)
-```
-
-## File modificati nell'ultimo commit
-```
-A	REPORT.md
-```
-
-## Ultimo prompt utente (estratto)
-```
-[{"tool_use_id":"toolu_01XpoTUnrnMi7GqmS9dbJVga","type":"tool_result","content":"aperta nel browser di default","is_error":false}]
-```
-
-## Ultimi turni assistant
-```
-Apro la pagina live nel browser.
-Aperta: **https://fluxion-seo.pages.dev/gestionale-parrucchieri-bologna/**
-Dovrebbe essere già nel browser. Guardala su desktop e — importante — anche da telefono (è mobile-first, le PMI la vedranno da lì). Quando l'hai vista dimmi il tuo giudizio sul **contenuto**: vero e di valore, o da arricchire prima di agganciarla a `fluxion-app.com`.
-```
+> Questo file NON contiene stato. Lo stato reale (anelli E2E, task corrente,
+> prossimi step) è in `STATE.md` — generato da `state/refresh.sh`, unico
+> source-of-truth. Non fidarti di status scritto a mano in nessun handoff.
 
 ## Come riprendere
 
-1. Apri Claude Code da `/private/tmp/seo-prod`
-2. Leggi questo file (auto-loaded? dipende da config progetto)
-3. Continua dal punto indicato negli ultimi turni assistant sopra
+1. `cd /Users/macbook/Documents/fluxion-seo`
+2. `bash state/refresh.sh <SESSION_ID>`  — ri-deriva lo stato dalla realtà
+3. Leggi `STATE.md`: tabella anelli (GENERATA) + task corrente + prossimi step
 
-Se `SESSION_DIRTY.md` esiste in questa stessa cartella, risolvi PRIMA i conflitti.
+Se `SESSION_DIRTY.md` esiste in questa cartella, risolvi PRIMA i conflitti.
