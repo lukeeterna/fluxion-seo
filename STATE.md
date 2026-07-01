@@ -1,7 +1,7 @@
 # STATE — fluxion-seo (pagina "Bologna guardalo funzionare")
 
 > Fonte durevole di stato. Committato e pushato. **MAI /tmp** (cancellato al reboot — già persi sorgenti S384/S385).
-> Ultimo aggiornamento: 2026-07-01 (T1c-A — re-seed screenshot agenda PIENA e credibile, 22 appuntamenti su Luglio 2026, founder ZERO). **Bologna §6 al 100% (netto #1).**
+> Ultimo aggiornamento: 2026-07-01 (T1c-B — FIX3 og:image agenda 1200x630 CHIUSO; FIX2 audio DISCORDANZA non-rotto; FIX4 logo NOTA-FOUNDER). **Bologna §6 al 100% (netto #1).**
 
 ## Coordinate
 - **Repo**: `git@github.com:lukeeterna/fluxion-seo.git` (clone durevole su `~/Documents/fluxion-seo`, SSD interno).
@@ -56,6 +56,11 @@ Il blocco session-0 della sessione precedente è stato AGGIRATO con tecnica legi
 - **Immagine**: full 1366×768 → crop offset PIL (rimosso titlebar/search/banner-licenza/taskbar) → 1200×502, PNG optimize 133604 B. Dimensioni = template `<img>` esistente → nessuna modifica markup.
 - CI run `28537619001` = completed/success.
 - `curl` file: `img=200 size=133604` (≠ 89285 = nuova immagine servita).
+
+## T1c-B — 3 fix leggeri pagina Bologna (2026-07-01, sola repo SEO, DB non toccato)
+- **FIX 2 (player audio) — DISCORDANZA, nessuna azione**: premessa "link nudo + 'browser non supporta' sempre visibile + markdown degrada il tag" FALSA sul disco. `[...slug].astro:181` è `.astro` (non markdown) con `<audio controls preload="none" src="/audio/sara-sample.m4a">Il tuo browser non supporta l'audio.</audio>` — tag HTML5 nativo funzionante, fallback già SOLO dentro il tag. File reale `public/audio/sara-sample.m4a` 53030 B, live 200 `audio/mp4`. Player NON rotto → non riscritto su premessa errata (contratto discordanza).
+- **FIX 3 (og:image) — CHIUSO**: era `ogImage="/og-default.png"` (placeholder, `[...slug].astro:77`). Creato `public/og-agenda.png` 1200×630 da `agenda-fluxion.png` 1200×502 con padding brand `#059669` (`sips --padToHeightWidth 630 1200 --padColor 059669`), 163384 B. Cambiato riferimento a `/og-agenda.png`. Commit `36fac3b`. CI `28538546702` completed/success. Live: `og:image` = `https://fluxion-seo.pages.dev/og-agenda.png`, asset `200 image/png 163384`, guardrail pagina `200`.
+- **FIX 4 (logo JPG→trasparente) — NOTA-FOUNDER**: solo `public/logo-fluxion.jpg` esiste (JPEG RGB 64×64, 1823 B, referenziato `[...slug].astro:82,246`). Nessun PNG/SVG nel repo. JPEG NON ha canale alpha; sfondo NON trasparente (corner pixel ~(208,211,220)/(229,229,237)/(178,182,191), grigio-azzurro chiaro). Conversione JPG→PNG produrrebbe PNG opaco con lo sfondo cotto dentro → NON crea trasparenza. Non inventato logo, non finta trasparenza. **Serve founder: fornire logo PNG/SVG con trasparenza originale.**
 
 ## Guardrail Lighthouse — DA RI-MISURARE
 - Metodo storico (Perf 91) NON riproducibile in questa sessione: `lighthouse` CLI assente su Big Sur, nessun metodo/config nel repo. Numeri NON fabbricati. Da ri-misurare con metodo documentato (idealmente su CI o ambiente macOS 12+).
