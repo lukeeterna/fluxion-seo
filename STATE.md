@@ -54,3 +54,20 @@ Il blocco session-0 della sessione precedente è stato AGGIRATO con tecnica legi
 ## Regole operative
 - Lavorare SOLO in repo pushato; artefatti durevoli in repo, **mai /tmp, mai T7**.
 - Nessun media fabbricato, nessuna testimonianza, nessun numero inventato finché non c'è la fonte reale.
+
+## T2 — Quality gate anti-doorway (uniqueness ratio) — OPERATIVO (2026-07-01)
+- **Tool**: `tools/uniqueness_gate.py` — stdlib only (html.parser+re), gira su Big Sur/Python3, NO Astro build. Opera su HTML renderizzato (file locale o URL). Exit!=0 se ≥1 pagina < HARD_STOP → usabile come step CI bloccante.
+- **Metrica**: 5-gram shingle sul TESTO VISIBILE (scarta script/style/svg/head/tag). uniqueness(pagina) = |shingle unici vs sorelle| / |shingle distinti|. I 3 asset template (screenshot agenda, audio Sara, "3 passi") sono testo/markup identico → contati NON-unici PER COSTRUZIONE (nel denominatore condiviso, non hardcoded).
+- **Soglie**: HARD_STOP<0.30 (blocca), WARNING<0.50, PASS≥0.50.
+- **PROVA rilevamento clone (done-condition HARD, grezzo)**:
+  - Bologna live vs clone-solo-swap (`sed Bologna→Modena`) → **ratio 0.028, HARD_STOP, exit=1**. Solo 25/897 shingle differiscono (le finestre col nome città). Il gate FALLISCE il clone, onestamente.
+  - Bologna vs Modena-genuina che localizza SOLO hero/case/metric (riusa features+faq+template) → **0.185, HARD_STOP, exit=1**.
+  - Bologna vs Modena-piena (hero+case+metric+features+faq riscritti) → **0.505/0.527, PASS, exit=0**. Prova che il gate NON è always-FAIL: 0.50 raggiungibile solo con contenuto per-città genuino su TUTTI i blocchi.
+- **VERDETTO BASELINE (onesto)**: coi campi per-città ATTUALI di locations.ts, una 2ª città che rifà solo hero/case/metric sta a ~0.18 → **sotto HARD_STOP**. Per superare 0.50 servono anche features+faq genuinamente locali, meglio ancora DATI locali reali. Il collo di bottiglia per scalare NON è il gate: è la MANCANZA di dati locali per-città.
+- **CAMPI-DATO LOCALI da aggiungere a PageData (→ §4 profilatore)** per portare ogni pagina ≥0.50:
+  - `nSaloniZona` (n. parrucchieri in città/quartiere) — FONTE: dato pubblico (Google Maps count / Camera Commercio) — da reperire.
+  - `prezzoMedioLocale` (taglio/piega medio città) — FONTE: listini pubblici locali / survey — da reperire.
+  - `quartieri[]` (zone reali citate: es. "Sacca", "centro") — FONTE: pubblico, gratis.
+  - `casoLocale` (caso/testimonianza concreta locale) — FONTE: §4 profilatore FB/IG attività reali, OPPURE cliente reale (BLOCCATO fino al 1° cliente — vietato fabbricare).
+  - `stagionalitaLocale` (eventi/picchi città) — FONTE: pubblico.
+- **Integrazione CI**: `python3 tools/uniqueness_gate.py <url1> <url2> ...` come step; exit!=0 fa fallire la build → nessuna doorway page pubblicabile. Non ancora agganciato al workflow (da fare in fase scala).
