@@ -1,7 +1,7 @@
 # STATE — fluxion-seo (pagina "Bologna guardalo funzionare")
 
 > Fonte durevole di stato. Committato e pushato. **MAI /tmp** (cancellato al reboot — già persi sorgenti S384/S385).
-> Ultimo aggiornamento: 2026-07-01 (T1b FATTO A — screenshot agenda: CHIUSO via bypass session-1 + DB seed, founder ZERO). **Bologna §6 al 100% (netto #1).**
+> Ultimo aggiornamento: 2026-07-01 (T1c-A — re-seed screenshot agenda PIENA e credibile, 22 appuntamenti su Luglio 2026, founder ZERO). **Bologna §6 al 100% (netto #1).**
 
 ## Coordinate
 - **Repo**: `git@github.com:lukeeterna/fluxion-seo.git` (clone durevole su `~/Documents/fluxion-seo`, SSD interno).
@@ -17,7 +17,7 @@
 | # | Buco | Stato |
 |---|------|-------|
 | 1 | Prova sociale / testimonianze | **BLOCCATO** fino al 1° cliente reale. Vietato fabbricare testimonianze/recensioni. |
-| 2 | Screenshot agenda reale (Passo 2) | **CHIUSO** (T1b FATTO A retry, 2026-07-01, commit `ffb9091`, founder ZERO). Screenshot REALE del Calendario FLUXION su Windows con 3 appuntamenti FITTIZI (Giulia Verdi 09:00, Marco Ferrari 10:30, Anna Colombo 14:00), integrato in "Passo 2" come `<img loading=lazy width=1200 height=502>`. Servito live 200. Prova sotto. |
+| 2 | Screenshot agenda reale (Passo 2) | **CHIUSO + MIGLIORATO** (T1c-A re-seed, 2026-07-01, commit `540fa9d`, founder ZERO). Screenshot REALE del Calendario FLUXION su Windows con **agenda PIENA**: 22 appuntamenti FITTIZI su Luglio 2026 (3 operatori, 8 servizi, 15 clienti VARI), mese credibile con più giorni popolati + "+2 altri" su Mer 1. Crop pulito (no banner-licenza, no taskbar), `<img loading=lazy width=1200 height=502>`, 133604 B. Servito live 200. Prova sotto. |
 | 3 | Audio reale Sara (Passo 3) | **CHIUSO** (T1b, commit `b0b4db7`, 2026-07-01): player `<audio controls preload="none">` con audio REALE generato da Sara viva (iMac `:3002` `/api/voice/say`), frase parrucchiere. File `public/audio/sara-sample.m4a` (AAC 22050Hz mono, 9.29s, 53030 B — sorgente WAV PCM16 16kHz da endpoint, transcodifica `afconvert` zero-install). Servito live 200. NB: player nel template condiviso `[...slug].astro` → appare su tutte le pagine (boilerplate, non uniqueness per-pagina). |
 | 4 | Copy vago "ridotti drasticamente" | **CHIUSO** (T1a, commit `411be76`): quantificato a `~8 ore a settimana`, provato sul live. |
 
@@ -47,6 +47,15 @@ Il blocco session-0 della sessione precedente è stato AGGIRATO con tecnica legi
 - `curl` live: `<img src="/img/agenda-fluxion.png" loading="lazy" width="1200" height="502" ...>` PRESENTE nel "Passo 2".
 - `curl` file: `img_http=200 size=89285 type=image/png`.
 - NB: il player audio (buco #3) e questo screenshot stanno nel template condiviso `[...slug].astro` → boilerplate su tutte le pagine, NON uniqueness per-città.
+
+## Done-condition T1c-A — re-seed agenda PIENA (verificata sul live, grezzo, 2026-07-01)
+- **Discordanza risolta**: il rendering NON è vista giorno/settimana ma **vista MESE** (`Calendario.tsx` `getMonthDays`, griglia 6×7, chip = ora + nome cliente, max 3 + "+N altri"). Seed distribuito sui feriali di Luglio 2026 per riempire il mese.
+- **Discordanza cache**: primo capture mostrava dati STALE (seed T1b "Giulia Verdi" ecc.) perché l'app viva (pid T1b) serviva cache React Query e il click nav non forza refetch. RISOLTO con **cold-restart app in Session 1** (kill + relaunch via scheduled task) → lettura DB a freddo.
+- **Seed** (prefix `seed-t1c-`, #1d): backup WAL-safe `fluxion.db.bak-t1c` (995328 B, Python `.backup()`) PRIMA di scrivere; pre-seed counts tutti 0. Inseriti 3 operatori (Laura Bianchi, Giulia Ferrari, Marco Conti) + 8 servizi (Taglio Donna €32 … Balayage €85) + 15 clienti italiani vari + 22 appuntamenti (09:00-16:00, durate 20-120 min, no overlap stesso operatore, orari UTC=locale-2h CEST).
+- **RESTORE** (#1d, stessa sessione): `DELETE WHERE id LIKE 'seed-t1c-%'` (22+15+8+3) + `wal_checkpoint(TRUNCATE)` = (0,0,0) → counts finali tutti 0, residual_seed 0. Backup `.bak-t1c` rimosso dopo conferma. **DB tornato pulito.**
+- **Immagine**: full 1366×768 → crop offset PIL (rimosso titlebar/search/banner-licenza/taskbar) → 1200×502, PNG optimize 133604 B. Dimensioni = template `<img>` esistente → nessuna modifica markup.
+- CI run `28537619001` = completed/success.
+- `curl` file: `img=200 size=133604` (≠ 89285 = nuova immagine servita).
 
 ## Guardrail Lighthouse — DA RI-MISURARE
 - Metodo storico (Perf 91) NON riproducibile in questa sessione: `lighthouse` CLI assente su Big Sur, nessun metodo/config nel repo. Numeri NON fabbricati. Da ri-misurare con metodo documentato (idealmente su CI o ambiente macOS 12+).
